@@ -1,0 +1,38 @@
+name: CM - Data Drift Monitor
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *'  # daily at midnight
+
+jobs:
+  check-drift:
+    runs-on: ubuntu-latest
+    outputs:
+      drift: ${{ steps.set-output.outputs.drift }}
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'  
+          
+      - name: Install Dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install pandas numpy
+
+      - name: Run Drift Monitor
+        run: python monitor_drift.py
+
+      - name: Set Drift Output
+        id: set-output
+        run: |
+          if [ -f drift_detected.txt ]; then
+            echo "Drift detected – consider retraining."
+          else
+            echo "No significant drift detected."
+          fi

@@ -18,6 +18,15 @@ print(f"New Mean Age: {new_mean}")
 # Simple threshold-based drift detection
 threshold = 5
 if abs(original_mean - new_mean) > threshold:
-    print("⚠️  Drift detected: consider retraining.")
+    print("drift detected: automatically retraining.")
+else:
+    print("No significant drift detected.")
+
+
+# monitor_drift.py
+if abs(original_mean - new_mean) > threshold:
+    print("⚠️  Drift detected: automatically retraining.")
+    with open("drift_detected.txt", "w") as f:
+        f.write("true")
 else:
     print("✅ No significant drift detected.")

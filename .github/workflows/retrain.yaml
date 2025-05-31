@@ -23,9 +23,3 @@ jobs:
 
     - name: Retrain Model
       run: python train_model.py
-
-    - name: Archive Trained Model
-      uses: actions/upload-artifact@v3
-      with:
-        name: salary-model
-        path: model.pkl
