@@ -1,9 +1,10 @@
 name: CD - Docker Swarm
 
 on:
-  push:
-    branches: [main]
-  workflow_dispatch:
+  workflow_run:
+    workflows: ["CI - Unit Tests and Model Training"]
+    types:
+      - completed
 
 jobs:
   deploy:
@@ -11,15 +12,13 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v3  # Needed to get stack.yaml which dictates where to deploy the image.
 
     - name: Log in to Docker Hub
       run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
-    - name: Build Docker image
-      run: |
-        docker build -t ${{ secrets.DOCKER_USERNAME }}/mlops_assessment:latest .
+    - name: Pull Docker image
+      run: docker pull ${{ secrets.DOCKER_USERNAME }}/mlops_assessment:latest
 
     - name: Deploy to Docker Swarm
-      run: |
-        docker stack deploy -c stack.yaml mlops-app
+      run: docker stack deploy -c stack.yaml mlops-app
