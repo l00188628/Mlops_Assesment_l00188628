@@ -1,4 +1,4 @@
-name: CT - Retrain Model
+name: CM - Retrain Model
 
 on:
   workflow_dispatch:
