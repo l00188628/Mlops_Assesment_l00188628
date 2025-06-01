@@ -1,4 +1,4 @@
-name: CM - Data Drift Monitor
+name: CT - Input Data Drift Detector
 
 on:
   workflow_dispatch:
