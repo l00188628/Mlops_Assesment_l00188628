@@ -16,6 +16,7 @@ print(f"Original Mean Age: {original_mean}")
 print(f"New Mean Age: {new_mean}")
 
 # Simple threshold-based drift detection
+threshold = 5
 if abs(original_mean - new_mean) > threshold:
     print("Drift detected: Consider retraining the model.")
     with open("drift_detected.txt", "w") as f:
